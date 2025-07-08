@@ -1,6 +1,7 @@
-import os
+import os, sys
 from dotenv import load_dotenv
 from google import genai
+from google.genai import types
 
 
 
@@ -12,9 +13,18 @@ def main():
 
     response = client.models.generate_content(
         model='gemini-2.0-flash-001', 
-        contents="Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum."
-
+        contents=sys.argv
+        
     )
+
+
+    if len(sys.argv) <= 1:
+            print("invalid input")
+            sys.exit(1)
+
+    messages = [
+    types.Content(role="user", parts=[types.Part(text=user_prompt)]),
+    ]
 
     print(response.text)
     print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
