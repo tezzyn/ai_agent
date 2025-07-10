@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, argparse
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
@@ -6,7 +6,6 @@ from google.genai import types
 
 
 def main():
-    #print("Hello from ai-agent!")
 
     load_dotenv()
 
@@ -28,13 +27,13 @@ def main():
  
     ]
 
-    
-         
 
     generate_content(client, messages)
     
 
 def generate_content(client, messages):
+
+    parser = argparse.ArgumentParser()
     
     response = client.models.generate_content(
         model='gemini-2.0-flash-001', 
@@ -42,28 +41,20 @@ def generate_content(client, messages):
     
     )
 
-    print(f"~~~~{len(messages[0])}~~~~")
+    
+    parser.add_argument("client")
 
+    parser.add_argument('-v', '--verbose', action='store_true')
 
-    if "--verbose" in messages:
+    args = parser.parse_args()
+    if  args.verbose:
 
         print(f"User prompt:\n{response.text}")
-        #print(response.text)
 
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-    # print(response.text)
-    # print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-    # print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-
-
-
-
-#print(response.text)
-#print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-#print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-    
-
+    else:
+        print(response.text)
 
 if __name__ == "__main__":
     main()
