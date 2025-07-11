@@ -9,3 +9,12 @@ def get_files_info(working_directory, directory=None):
     
     if os.path.isdir(directory):
         return f'Error: "{directory}" is not a directory'
+
+    
+    
+    contents = (
+        f"- {directory}: file_size={os.path.getsize(directory)} bytes, is_dir={os.path.isdir(directory)}"
+    )
+
+    return contents
+        
