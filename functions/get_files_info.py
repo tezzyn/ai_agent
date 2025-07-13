@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 
 def get_files_info(working_directory, directory=None):
@@ -25,17 +26,24 @@ def get_files_info(working_directory, directory=None):
     # except OSError as e:
     #     print(f"Error: {e}")
 
- 
+    wd = Path(working_directory)
+    d = Path(directory)
 
-    path = os.path.join(working_directory,directory)
+    path = wd / d
 
-    full_path = os.listdir(path)
+    #full_path = os.listdir(path)
+
+    #print(f"~~~{full_path}~~~")
 
     try:
 
-        for i in full_path:
+        for i in path.iterdir():
+
+            print(i.name)
+            #print(f"~~~{os.path.isdir(full_path[i])}~~~")
+            #items = full_path[i]
             contents = (
-                f"- {i}: file_size={os.path.getsize(i)} bytes, is_dir={os.path.isdir(i)}\n"
+                f"- {i.name}: file_size={i.stat().st_size} bytes, is_dir={path.is_dir(i)}\n"
             )
         return contents
     except OSError as e:
