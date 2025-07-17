@@ -1,5 +1,5 @@
 import os
-from pathlib import Path
+from pathlib import Path, PurePath
 
 
 def get_files_info(working_directory, directory=None):
@@ -7,22 +7,32 @@ def get_files_info(working_directory, directory=None):
     wd = Path(working_directory)
     d = Path(directory)
 
-    path = wd / d
+    ppath = PurePath(working_directory, directory)
+
+    pppath = Path(working_directory, directory)
+
+    path = wd/d
 
     prompt = []
 
-    rel_check = (wd.absolute().parent == d.absolute())
+    rel_check = (
+        wd.absolute().parent == d.absolute()
+        )
 
-    print(d)
+    print(d) 
 
-    print(d.absolute())
-    print(d.resolve())
+    print(wd.absolute(), d.absolute())
+
+    print(pppath.resolve())
+
+    #print([x.parent.name for x in path.iterdir()])
+    #print(wd.absolute().parent, d.absolute())
     # print(rel_check)
 
     if d.is_dir() == False:
         return f'Error: "{directory}" is not a directory'
 
-    if directory == "." or rel_check == True:
+    if rel_check == True:
 
         for i in path.iterdir():
             #print(type(i))
