@@ -4,45 +4,43 @@ from pathlib import Path, PurePath
 
 def get_files_info(working_directory, directory=None):
 
+
     wd = Path(working_directory)
     d = Path(directory)
 
-    ppath = PurePath(working_directory, directory)
+    combined = wd/d
 
-    pppath = Path(working_directory, directory)
+    cwd = Path.cwd()
 
-    path = wd/d
+    #print(cwd == combined)
+
+    #print(d.resolve().is_relative_to(cwd))
 
     prompt = []
+    try:
 
-    rel_check = (
-        wd.absolute().parent == d.absolute()
-        )
+        rel_check = ( # check if d in wd- somehow
+            d.resolve().is_relative_to(cwd)
+            
+            )
+    except ValueError:
+        return f'Error: Cannot list "{directory}" as it is outside the permitted working directory'
 
-    print(d) 
+    # print(PurePath(wd).is_relative_to(d.parent))
+    #print(f"```{path.cwd()}````, ````{wd}`````, ````{d.parent}`````")
 
-    print(wd.absolute(), d.absolute())
-
-    print(pppath.resolve())
-
-    #print([x.parent.name for x in path.iterdir()])
-    #print(wd.absolute().parent, d.absolute())
-    # print(rel_check)
-
-    if d.is_dir() == False:
+    if combined.absolute().is_dir() == False:
         return f'Error: "{directory}" is not a directory'
+ 
 
+    
     if rel_check == True:
 
-        for i in path.iterdir():
-            #print(type(i))
+        for i in combined.iterdir():
 
             contents = (
                 f"- {i.name}: file_size={i.stat().st_size} bytes, is_dir={i.is_dir()}"
             )
-            prompt.append(contents)    
-    else:
-
-        return f'Error: Cannot list "{directory}" as it is outside the permitted working directory'
+            prompt.append(contents)
     
     return "\n".join(prompt)
