@@ -29,7 +29,9 @@ def get_files_info(working_directory, directory=None):
         for i in combined.iterdir():
 
             contents = (
+
                 f"- {i.name}: file_size={i.stat().st_size} bytes, is_dir={i.is_dir()}"
+                
             )
             prompt.append(contents)
     else:
