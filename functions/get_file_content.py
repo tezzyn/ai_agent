@@ -1,4 +1,6 @@
+from pathlib import Path
 from config import MAX_CHARS
+
 
 
 
@@ -22,4 +24,15 @@ def get_file_content(working_directory, file_path):
 
         return f'Error: File not found or is not a regular file: "{file_path}"'
 
-    
+
+    try:
+
+        with open(combined, "r+") as f:
+
+            return (f.read(MAX_CHARS).replace('\n', ''), f"[...File \"{file_path}\" truncated at 10000 characters]")
+
+        f.close()
+
+    except ValueError as e:
+        return f'Error: "{e}"'
+

@@ -19,6 +19,7 @@ def get_files_info(working_directory, directory=None):
         )
 
 
+
     if combined.absolute().is_dir() == False:
 
         return f'Error: "{directory}" is not a directory'
