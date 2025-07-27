@@ -1,5 +1,7 @@
 from pathlib import Path
 
+
+
 def write_file(working_directory, file_path, content):
 
     combined = Path(working_directory)/Path(file_path)
@@ -18,6 +20,8 @@ def write_file(working_directory, file_path, content):
     try:
 
         with open(combined, "w") as f:
+
+            f.write(content)
 
             return (f'Successfully wrote to "{file_path}" ({len(content)} characters written)')
 
