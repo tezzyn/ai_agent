@@ -17,15 +17,17 @@ def write_file(working_directory, file_path, content):
     if not rel_check:
         return f'Error: Cannot read "{file_path}" as it is outside the permitted working directory'
 
+    if  not combined.parent.exists():
+        combined.parent.mkdir(parents=True)
+
+
     try:
 
         with open(combined, "w") as f:
 
             f.write(content)
 
-            return (f'Successfully wrote to "{file_path}" ({len(content)} characters written)')
+            return (f'Successfully wrote to "{combined}" ({len(content)} characters written)')
 
-        f.close()
-
-    except OSError as e:
+    except Exception as e:
         return f'Error: "{e}"'

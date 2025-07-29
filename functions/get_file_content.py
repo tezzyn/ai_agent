@@ -2,8 +2,6 @@ from pathlib import Path
 from config import MAX_CHARS
 
 
-
-
 def get_file_content(working_directory, file_path):
 
     combined = Path(working_directory)/Path(file_path)
@@ -33,6 +31,6 @@ def get_file_content(working_directory, file_path):
 
         f.close()
 
-    except OSError as e:
+    except Exception as e:
         return f'Error: "{e}"'
 
