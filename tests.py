@@ -4,6 +4,9 @@ from functions.get_files_info import get_files_info
 from functions.get_file_content import get_file_content
 from functions.write_file import write_file
 
+import subprocess
+
+
 # print(get_files_info("calculator", "."))
 
 # print("--------------------------------------------------------------------")
@@ -38,12 +41,19 @@ from functions.write_file import write_file
 #             #
 
 
-print(write_file("calculator", "lorem.txt", "wait, this isn't lorem ipsum"))
+# print(write_file("calculator", "lorem.txt", "wait, this isn't lorem ipsum"))
 
-print("--------------------------------------------------------------------")
+# print("--------------------------------------------------------------------")
 
-print(write_file("calculator", "pkg/morelorem.txt", "lorem ipsum dolor sit amet"))
+# print(write_file("calculator", "pkg/morelorem.txt", "lorem ipsum dolor sit amet"))
 
-print("--------------------------------------------------------------------")
+# print("--------------------------------------------------------------------")
 
-print(write_file("calculator", "/tmp/temp.txt", "this should not be allowed"))
+# print(write_file("calculator", "/tmp/temp.txt", "this should not be allowed"))
+
+
+foo = ['oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo']
+
+for i in foo:
+    subprocess.run(['timeout','--kill-after=3'])
+    print(i)
