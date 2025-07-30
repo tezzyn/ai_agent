@@ -29,8 +29,6 @@ def get_file_content(working_directory, file_path):
 
             return (f.read(MAX_CHARS).replace('\n', ''), f"[...File \"{file_path}\" truncated at 10000 characters]")
 
-        f.close()
-
     except Exception as e:
         return f'Error: "{e}"'
 
