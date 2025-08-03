@@ -1,12 +1,13 @@
 from pathlib import Path
+import subprocess
 
 
 def run_python_file(working_directory, file_path, args=[]):
 
-
     combined = Path(working_directory)/Path(file_path)
 
     cwd = Path.cwd()
+    print(cwd)
 
     rel_check = ( 
         
@@ -20,7 +21,18 @@ def run_python_file(working_directory, file_path, args=[]):
     if not combined.parent.exists:
         return f'Error: File "{file_path}" not found.'
     
-    if not Path(file_path).name().endswith('.py'):
+    if not file_path.endswith('.py'):
         return f'Error: "{file_path}" is not a Python file.'
     
+
+    # if sub.returncode != 0:
+    #     return f"Error: {sub.stderr}"
     
+    
+    sub = subprocess.run(
+        "timeout 3 uv run run_file.py".split(),
+        shell=True, 
+        text=True,
+        )
+
+    print(sub.stderr, sub.stdout)

@@ -2,6 +2,7 @@
 
 from functions.get_files_info import get_files_info
 from functions.get_file_content import get_file_content
+from functions.run_file import run_python_file
 from functions.write_file import write_file
 
 import subprocess
@@ -52,8 +53,19 @@ import subprocess
 # print(write_file("calculator", "/tmp/temp.txt", "this should not be allowed"))
 
 
-foo = ['oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo']
+# foo = ['ooooooooooooo','oooooooooooooo','oooooooooo','oooooooooooo','ooooooo','oooooooo','oooooooooo','ooooooo','ooooo','oooo']
+# count = 0
 
-for i in foo:
-    subprocess.run(['timeout','--kill-after=3'])
-    print(i)
+# while True:
+#     for i in foo:
+        
+        
+
+#         for j in i:
+#             count+=1
+            
+#         print(i,count)
+#         count=0
+
+
+run_python_file("calculator", "main.py")
