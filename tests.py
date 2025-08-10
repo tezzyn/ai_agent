@@ -53,19 +53,6 @@ import subprocess
 # print(write_file("calculator", "/tmp/temp.txt", "this should not be allowed"))
 
 
-# foo = ['ooooooooooooo','oooooooooooooo','oooooooooo','oooooooooooo','ooooooo','oooooooo','oooooooooo','ooooooo','ooooo','oooo']
-# count = 0
-
-# while True:
-#     for i in foo:
-        
-        
-
-#         for j in i:
-#             count+=1
-            
-#         print(i,count)
-#         count=0
 
 
-run_python_file("calculator", "main.py")
+print(run_python_file("calculator", "main.py"))

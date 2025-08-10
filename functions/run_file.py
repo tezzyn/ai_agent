@@ -1,5 +1,6 @@
 from pathlib import Path
 import subprocess
+import time
 
 
 def run_python_file(working_directory, file_path, args=[]):
@@ -7,7 +8,7 @@ def run_python_file(working_directory, file_path, args=[]):
     combined = Path(working_directory)/Path(file_path)
 
     cwd = Path.cwd()
-    print(cwd)
+    #print(cwd)
 
     rel_check = ( 
         
@@ -27,12 +28,18 @@ def run_python_file(working_directory, file_path, args=[]):
 
     # if sub.returncode != 0:
     #     return f"Error: {sub.stderr}"
-    
-    
-    sub = subprocess.run(
-        "timeout 3 uv run run_file.py".split(),
-        shell=True, 
-        text=True,
-        )
 
-    print(sub.stderr, sub.stdout)
+
+    try:
+        s_run = subprocess.run(f"uv run {combined}".split(), timeout=5, cwd=cwd, capture_output=True)
+        return (s_run.stdout, s_run.stderr)
+    except subprocess.TimeoutExpired:
+        print("The command timed out.")
+    
+    
+    # sub = subprocess.run(
+    #     "uv run run_file.py".split(),
+    #     timeout=10,
+    #     )
+
+    # print(sub.stderr, sub.stdout)
