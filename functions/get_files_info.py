@@ -5,7 +5,7 @@ from pathlib import Path
 def get_files_info(working_directory, directory=None):
 
 
-    combined = Path(working_directory)/Path(directory)
+    combined = Path(working_directory)/Path(directory) 
 
     cwd = Path.cwd()
 
@@ -14,7 +14,7 @@ def get_files_info(working_directory, directory=None):
 
     rel_check = ( 
         
-        Path(directory).resolve().is_relative_to(cwd)
+        Path(directory).resolve().is_relative_to(cwd) 
         
         )
 
