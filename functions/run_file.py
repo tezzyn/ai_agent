@@ -1,5 +1,5 @@
 from pathlib import Path
-import subprocess, shlex 
+import subprocess
 import time
 
 
@@ -26,23 +26,27 @@ def run_python_file(working_directory, file_path, args=[]):
         return f'Error: "{file_path}" is not a Python file.'
     
 
-
-    foo = subprocess.Popen(f"uv run {Path(combined)}".split())
-
-    uv_process = subprocess.Popen(foo,args)
     
-    
-    out,err = uv_process.communicate(timeout=5)
 
-    print(uv_process)
+    for i in args:
+        print(i)
+        foo = subprocess.Popen()
+
+    if args:
+        print(True)
+    else:
+        print("maybe not")
+
+    #print(combined.resolve().append(args))
+
 
     # if sub.returncode != 0:
     #     return f"Error: {sub.stderr}"
 
 
     # try:
-    #     s_run = subprocess.run(f"uv run {combined}".split(), timeout=5, cwd=cwd, capture_output=True, text=True)
-    #     return (s_run.decode())
+    #     s_run = subprocess.run(f"uv run {combined}".split(), timeout=5, cwd=cwd, capture_output=True)
+    #     return (s_run.stdout., s_run.stderr)
     # except subprocess.TimeoutExpired:
     #     print("The command timed out.")
     

@@ -55,4 +55,7 @@ import subprocess
 
 
 
-print(run_python_file("calculator", "main.py"))
+# print(run_python_file("calculator", "main.py"))
+
+print(run_python_file("calculator", "main.py", ["3 + 5"]))
+
