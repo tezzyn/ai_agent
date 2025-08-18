@@ -1,6 +1,8 @@
 from pathlib import Path
 import subprocess
 import time
+import sys
+from subprocess import Popen
 
 
 def run_python_file(working_directory, file_path, args=[]):
@@ -24,36 +26,34 @@ def run_python_file(working_directory, file_path, args=[]):
     
     if not file_path.endswith('.py'):
         return f'Error: "{file_path}" is not a Python file.'
-    
+
+
+    #print(args[0])
+    print(cwd)
+
+
+    try:
+        process = subprocess.run(
+            ["uv", "run",f"{combined}",args[0]], 
+            #capture_output=True, 
+            #shell=True, 
+            # stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE,
+            text=True,
+            timeout=20,
+            )
+        
+        if args:
+            process.input = args[0]
+        
+        print(process.stdout)
+        #print(process.stderr)
+    except ChildProcessError as e:
+        return(e)
+
 
     
 
-    for i in args:
-        print(i)
-        foo = subprocess.Popen()
-
-    if args:
-        print(True)
-    else:
-        print("maybe not")
-
-    #print(combined.resolve().append(args))
 
 
-    # if sub.returncode != 0:
-    #     return f"Error: {sub.stderr}"
-
-
-    # try:
-    #     s_run = subprocess.run(f"uv run {combined}".split(), timeout=5, cwd=cwd, capture_output=True)
-    #     return (s_run.stdout., s_run.stderr)
-    # except subprocess.TimeoutExpired:
-    #     print("The command timed out.")
-    
-    
-    # sub = subprocess.run(
-    #     "uv run run_file.py".split(),
-    #     timeout=10,
-    #     )
-
-    # print(sub.stderr, sub.stdout)
