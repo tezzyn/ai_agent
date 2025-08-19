@@ -2,7 +2,7 @@ from pathlib import Path
 import subprocess
 import time
 import sys
-from subprocess import Popen
+from subprocess import Popen, SubprocessError
 
 
 def run_python_file(working_directory, file_path, args=[]):
@@ -21,20 +21,28 @@ def run_python_file(working_directory, file_path, args=[]):
     if not rel_check:
         return f'Error: Cannot execute "{file_path}" as it is outside the permitted working directory'
     
-    if not combined.parent.exists:
+    if not Path(file_path).exists():
         return f'Error: File "{file_path}" not found.'
     
     if not file_path.endswith('.py'):
         return f'Error: "{file_path}" is not a Python file.'
 
 
-    #print(args[0])
-    print(cwd)
+    # print(Path(file_path).resolve().is_relative_to(cwd))
+    
 
+    prompt = []
 
+    if len(args) != 0:
+        prompt = ["uv", "run",f"{combined}",args[0]]
+    else:
+        prompt = ["uv", "run",f"{combined}"]
+
+   
     try:
+   
         process = subprocess.run(
-            ["uv", "run",f"{combined}",args[0]], 
+            prompt, 
             #capture_output=True, 
             #shell=True, 
             # stdin=subprocess.PIPE,
@@ -42,17 +50,16 @@ def run_python_file(working_directory, file_path, args=[]):
             stderr=subprocess.PIPE,
             text=True,
             timeout=20,
+            check=True,
             )
+
         
-        if args:
-            process.input = args[0]
-        
-        print(process.stdout)
+        # print(process.stdout)
         #print(process.stderr)
-    except ChildProcessError as e:
+    except subprocess.SubprocessError as e:
         return(e)
 
-
+    return process.stdout
     
 
 
