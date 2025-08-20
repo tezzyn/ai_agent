@@ -1,5 +1,6 @@
 
 
+import time
 from functions.get_files_info import get_files_info
 from functions.get_file_content import get_file_content
 from functions.run_file import run_python_file
@@ -64,11 +65,12 @@ import subprocess
 
 # print("--------------------------------------------------------------------")
 
-# print(run_python_file("calculator", "main.py", ["3 + 5"]))
+print(run_python_file("calculator", "main.py", ["3 + 5"]))
+
 
 # print("--------------------------------------------------------------------")
 
-print(run_python_file("calculator", "tests.py"))
+# print(run_python_file("calculator", "tests.py"))
 
 # print("--------------------------------------------------------------------")
 
