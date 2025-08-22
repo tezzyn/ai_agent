@@ -1,27 +1,27 @@
 from pathlib import Path
 import subprocess
 import time
-import types
 import sys
 from subprocess import SubprocessError
+from google.genai import types
+
+
+schema_run_python_file = types.FunctionDeclaration(
+        name="run_python_file",
+        description="Run files in the specified directory with subprocess",
+        parameters=types.Schema(
+            type=types.Type.OBJECT,
+            properties={
+                "directory": types.Schema(
+                    type=types.Type.STRING,
+                    description="The directory to run files from, relative to the working directory. If not provided, run files in the working directory itself.",
+                ),
+            },
+        ),
+    )
 
 
 def run_python_file(working_directory, file_path, args=[]):
-
-
-    # schema_get_files_info = types.FunctionDeclaration(
-    #     name="run_python_file",
-    #     # description="Lists files in the specified directory along with their sizes, constrained to the working directory.",
-    #     parameters=types.Schema(
-    #         type=types.Type.OBJECT,
-    #         properties={
-    #             "directory": types.Schema(
-    #                 type=types.Type.STRING,
-    #                 description="The directory to run files from, relative to the working directory. If not provided, lists files in the working directory itself.",
-    #             ),
-    #         },
-    #     ),
-    # )
 
     combined = Path(working_directory)/Path(file_path)
 
@@ -42,14 +42,6 @@ def run_python_file(working_directory, file_path, args=[]):
     if not file_path.endswith('.py'):
         return f'Error: "{file_path}" is not a Python file.'
     
-
-    prompt = []
-
-    if len(args) != 0:
-        prompt = ["uv","run",f"{combined}",args[0]]
-    else:
-        prompt = ["uv", "run",f"{combined}"]
-
 
     try:
         commands = ["python", combined.absolute()]

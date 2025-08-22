@@ -1,5 +1,20 @@
 from pathlib import Path
+from google.genai import types
 
+
+schema_write_file = types.FunctionDeclaration(
+        name="write_file",
+        description="Write content to file in the specified directory and shows the character count",
+        parameters=types.Schema(
+            type=types.Type.OBJECT,
+            properties={
+                "directory": types.Schema(
+                    type=types.Type.STRING,
+                    description="The directory to write files to, relative to the working directory. If not provided, list file content in the working directory itself.",
+                ),
+            },
+        ),
+    )
 
 
 def write_file(working_directory, file_path, content):
