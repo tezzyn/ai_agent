@@ -4,11 +4,11 @@ from google.genai import types
 
 schema_write_file = types.FunctionDeclaration(
         name="write_file",
-        description="Write content to file in the specified directory and shows the character count",
+        description="Write to file in the specified directory, constrained to the working directory.",
         parameters=types.Schema(
             type=types.Type.OBJECT,
             properties={
-                "directory": types.Schema(
+                "file_path": types.Schema(
                     type=types.Type.STRING,
                     description="The directory to write files to, relative to the working directory. If not provided, list file content in the working directory itself.",
                 ),

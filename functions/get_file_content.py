@@ -4,11 +4,11 @@ from google.genai import types
 
 schema_get_file_content = types.FunctionDeclaration(
         name="get_file_content",
-        description="Get file content in the specified directory and opens that file in read mode and list the contents",
+        description="Read files in the specified directory and prints content, constrained to the working directory.",
         parameters=types.Schema(
             type=types.Type.OBJECT,
             properties={
-                "directory": types.Schema(
+                "file_path": types.Schema(
                     type=types.Type.STRING,
                     description="The directory to get files from, relative to the working directory. If not provided, list file content in the working directory itself.",
                 ),
@@ -20,6 +20,8 @@ schema_get_file_content = types.FunctionDeclaration(
 def get_file_content(working_directory, file_path):
 
     combined = Path(working_directory)/Path(file_path)
+
+
 
     cwd = Path.cwd()
 

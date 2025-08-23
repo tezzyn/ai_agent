@@ -8,11 +8,11 @@ from google.genai import types
 
 schema_run_python_file = types.FunctionDeclaration(
         name="run_python_file",
-        description="Run files in the specified directory with subprocess",
+        description="Run files in the specified directory with subprocess, constrained to the working directory.",
         parameters=types.Schema(
             type=types.Type.OBJECT,
             properties={
-                "directory": types.Schema(
+                "file_path": types.Schema(
                     type=types.Type.STRING,
                     description="The directory to run files from, relative to the working directory. If not provided, run files in the working directory itself.",
                 ),
@@ -44,7 +44,7 @@ def run_python_file(working_directory, file_path, args=[]):
     
 
     try:
-        commands = ["python", combined.absolute()]
+        commands = ["uv", "run", combined.absolute()]
         if args:
             commands.extend(args)
         result = subprocess.run(
