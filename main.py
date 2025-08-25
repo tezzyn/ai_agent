@@ -51,23 +51,24 @@ def generate_content(client, messages):
     args = parser.parse_args()
 
     if  args.verbose:
+        
 
-        print(f"User prompt: {response.text}\n")
+        print(f"User prompt: {print (response.function_calls)}\n")
 
 
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-    else:
 
-        # print(f"No function call found: {response.text}\n")
 
-    if not response.function_call:
-        return f"No function call found: {response.text}\n"
-    else:
-        function_call
  
-    for function_call_part in response.function_call:
-        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+    for function_call_part in response.function_calls:
+
+        if function_call_part:
+            response.function_calls
+            print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+        else:
+            response.function_calls
+        
 
 if __name__ == "__main__":
     main()
