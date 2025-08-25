@@ -43,7 +43,7 @@ import subprocess
 #             #
 
 
-# print(write_file("calculator", "lorem.txt", "wait, this isn't lorem ipsum"))
+print(write_file("calculator", "lorem.txt", "wait, this isn't batman ipsum"))
 
 # print("--------------------------------------------------------------------")
 
@@ -61,7 +61,7 @@ import subprocess
 
 # print("--------------------------------------------------------------------")
 
-print(run_python_file("calculator", "main.py", ["3 + 5"]))
+# print(run_python_file("calculator", "main.py", ["3 + 5"]))
 
 
 # print("--------------------------------------------------------------------")
