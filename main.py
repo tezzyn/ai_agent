@@ -51,8 +51,6 @@ def generate_content(client, messages):
     args = parser.parse_args()
 
     if  args.verbose:
-        
-
 
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
@@ -61,14 +59,16 @@ def generate_content(client, messages):
  
     for function_call_part in response.function_calls:
 
-        print(response.function_calls)
-
-        if function_call_part.args['content'] == None:
+        if function_call_part.args == 0:
+            
             # response.function_calls
-            print(f"Calling function: {function_call_part.name}({function_call_part.args['file_path']})({function_call_part.args['content']})")
+            print(f"Calling function: {function_call_part.name}({function_call_part.args['file_path']}, {function_call_part.args['content']})")
         else:
-            print(f"Calling function: {function_call_part.name}({function_call_part.args['file_path']})")
-        
+            
+            print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+
+
+
 
 if __name__ == "__main__":
     main()
