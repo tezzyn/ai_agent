@@ -13,6 +13,7 @@ schema_get_file_content = types.FunctionDeclaration(
                     description="The directory to get files from, relative to the working directory. If not provided, list file content in the working directory itself.",
                 ),
             },
+            required=["file_path"],
         ),
     )
 

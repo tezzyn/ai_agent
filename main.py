@@ -57,15 +57,22 @@ def generate_content(client, messages):
  
 
  
-    for function_call_part in response.function_calls:
+    # for function_call_part in response.function_calls:
 
-        if function_call_part.args == 0:
+    #     if function_call_part.args == 0:
             
-            # response.function_calls
-            print(f"Calling function: {function_call_part.name}({function_call_part.args['file_path']}, {function_call_part.args['content']})")
-        else:
+    #         # response.function_calls
+    #         print(f"Calling function: {function_call_part.name}({function_call_part.args['file_path']}, {function_call_part.args['content']})")
+    #     else:
             
-            print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+    #         print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+
+    if not response.function_calls:
+        return response.text
+
+    for function_call_part in response.function_calls:
+        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+
 
 
 

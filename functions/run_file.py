@@ -17,6 +17,7 @@ schema_run_python_file = types.FunctionDeclaration(
                     description="The directory to run files from, relative to the working directory. If not provided, run files in the working directory itself.",
                 ),
             },
+            required=["file_path"],
         ),
     )
 

@@ -19,6 +19,7 @@ schema_write_file = types.FunctionDeclaration(
 
                 ),
             },
+            required=["file_path", "content"],
         ),
     )
 
