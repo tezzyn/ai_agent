@@ -2,7 +2,7 @@ from pathlib import Path
 from google.genai import types
 
 
-schema_write_file = types.FunctionDeclaration(
+schema_write_file  = types.FunctionDeclaration(
         name="write_file",
         description="Write to file in the specified directory, if the file doesnt exist it creates the file in the working directory",
         parameters=types.Schema(

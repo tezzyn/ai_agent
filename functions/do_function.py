@@ -1,10 +1,9 @@
 
 from google.genai import types
-from functions import *
 from functions.get_files_info import get_files_info
 from functions.get_file_content import get_file_content
 from functions.run_file import run_file
-from functions.write_file import write_file
+from functions.write_file  import write_file
 
 def call_function(function_call_part, verbose=False):
 
@@ -13,24 +12,26 @@ def call_function(function_call_part, verbose=False):
     else:
         print(f" - Calling function: {function_call_part.name}")
 
-    # function_name = {
-    #     function_call_part["get_file_content"]: get_file_content(function_call_part.args),
+    name_to_func = {
+        "get_file_content": get_file_content,
 
-    #     function_call_part["get_files_info"]: get_files_info(function_call_part.args),
+        "get_files_info": get_files_info,
+    
+        "run_file": run_file,
+
+        "write_file": write_file,
         
-    #     function_call_part["run_file"]: run_file(function_call_part.args),
+        }
 
-    #     function_call_part["write_file"]: write_file(function_call_part.args),
-        
-    #     }
+    function_name = function_call_part.name
+    
+    func = name_to_func.get(function_name)
 
-    function_name = function_call_part.name 
-
-    for i in function_name:
-        func = i.get(function_name)
+    # for i in function_name:
+    #     func = i.get(function_name)
 
 
-    func_dict = {function_name: func}
+    # func_dict = {function_name: func}
 
     if func == None:
 
@@ -50,5 +51,15 @@ def call_function(function_call_part, verbose=False):
 
 
     result = func(**kwargs)
+    
+    return types.Content(
+    role="tool",
+    parts=[
+        types.Part.from_function_response(
+            name=function_name,
+            response={"result": result},
+        )
+    ],
+)
 
     
