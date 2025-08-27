@@ -22,7 +22,7 @@ schema_run_python_file = types.FunctionDeclaration(
     )
 
 
-def run_python_file(working_directory, file_path, args=[]):
+def run_file(working_directory, file_path, args=[]):
 
     combined = Path(working_directory)/Path(file_path)
 
