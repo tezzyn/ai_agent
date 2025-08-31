@@ -4,6 +4,7 @@ from google import genai
 from google.genai import types
 
 from call_function import available_functions
+from functions.do_function import do_function
 from prompts import system_prompt
 
 
@@ -34,6 +35,8 @@ def main():
     
 
 def generate_content(client, messages):
+    
+    # verbose = "-v" in sys.argv or "--verbose" in sys.argv
 
     parser = argparse.ArgumentParser()
     
@@ -51,27 +54,22 @@ def generate_content(client, messages):
     args = parser.parse_args()
 
     if  args.verbose:
+        if not response.function_calls:
+            return response.text
+
+        for function_call_part in response.function_calls:
+
+            print(do_function(function_call_part, verbose=True).parts[0].function_response.response)
 
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
- 
+    else:
 
- 
-    # for function_call_part in response.function_calls:
+        if not response.function_calls:
+            return response.text
 
-    #     if function_call_part.args == 0:
-            
-    #         # response.function_calls
-    #         print(f"Calling function: {function_call_part.name}({function_call_part.args['file_path']}, {function_call_part.args['content']})")
-    #     else:
-            
-    #         print(f"Calling function: {function_call_part.name}({function_call_part.args})")
-
-    if not response.function_calls:
-        return response.text
-
-    for function_call_part in response.function_calls:
-        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+        for function_call_part in response.function_calls:
+            print(do_function(function_call_part).parts[0].function_response.response)
 
 
 
