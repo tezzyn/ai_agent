@@ -3,8 +3,7 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-from call_function import available_functions
-from functions.do_function import do_function
+from call_function import available_functions, call_function
 from prompts import system_prompt
 
 
@@ -59,7 +58,7 @@ def generate_content(client, messages):
 
         for function_call_part in response.function_calls:
 
-            print(do_function(function_call_part, verbose=True).parts[0].function_response.response)
+            print(call_function(function_call_part, verbose=True).parts[0].function_response.response)
 
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
@@ -69,7 +68,7 @@ def generate_content(client, messages):
             return response.text
 
         for function_call_part in response.function_calls:
-            print(do_function(function_call_part).parts[0].function_response.response)
+            print(call_function(function_call_part).parts[0].function_response.response)
 
 
 
