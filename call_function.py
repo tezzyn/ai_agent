@@ -23,11 +23,11 @@ available_functions = types.Tool(
 def call_function(function_call_part, verbose=False):
 
     if verbose:
-        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+        print(f"-> Calling function: {function_call_part.name}({function_call_part.args})")
     else:
-        print(f"Calling function: {function_call_part.name}")
+        print(f"-> Calling function: {function_call_part.name}")
 
-    name_to_func = {
+    func_map = {
         "get_file_content": get_file_content,
 
         "get_files_info": get_files_info,
@@ -38,32 +38,32 @@ def call_function(function_call_part, verbose=False):
         
         }
 
-    function_name = function_call_part.name
+    func_name = function_call_part.name
     
-    func = name_to_func.get(function_name)
+    # func = name_to_func.get(function_name)
 
-    if func == None:
+    if func_name not in func_map:
 
         return types.Content(  
             role="tool",
             parts=[
                 types.Part.from_function_response(
-                    name=function_name,
-                    response={"error": f"Unknown function: {function_name}"},
+                    name=func_name,
+                    response={"error": f"Unknown function: {func_name}"},
                 )
             ],
         )
 
-    kwargs = dict(function_call_part.args)
-    kwargs["working_directory"] = "./calculator"
+    args = dict(function_call_part.args)
+    args["working_directory"] = "./calculator"
 
-    result = func(**kwargs)
+    result = func_map[func_name](**args)
     
     return types.Content(
         role="tool",
         parts=[
             types.Part.from_function_response(
-                name=function_name,
+                name=func_name,
                 response={"result": result},
             )
         ],

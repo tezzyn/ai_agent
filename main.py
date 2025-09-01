@@ -10,6 +10,7 @@ from prompts import system_prompt
 def main():
 
     load_dotenv()
+    verbose = "--verbose" in sys.argv or "-v" in sys.argv
 
     args = sys.argv[1:]
 
@@ -21,8 +22,11 @@ def main():
 
     api_key = os.environ.get("GEMINI_API_KEY")
     client = genai.Client(api_key=api_key)
-
+  
     user_prompt = " ".join(args)
+    
+    if verbose:
+        print(f"-> User prompt: {user_prompt}\n")
 
     messages = [
         types.Content(role="user", parts=[types.Part(text=user_prompt)]),
@@ -53,24 +57,27 @@ def generate_content(client, messages):
     args = parser.parse_args()
 
     if  args.verbose:
-        if not response.function_calls:
-            return response.text
+        print(f"-> Prompt tokens: {response.usage_metadata.prompt_token_count}")
+        print(f"-> Response tokens: {response.usage_metadata.candidates_token_count}\n")
 
-        for function_call_part in response.function_calls:
+    if not response.function_calls:
+        return response.text
+    
+    function_responses = []
 
-            print(call_function(function_call_part, verbose=True).parts[0].function_response.response)
+    for function_call_part in response.function_calls:
+        function_call_result = call_function(function_call_part, args.verbose)
+        if (
+            not function_call_result.parts
+            or not function_call_result.parts[0].function_response
+        ):
+            raise Exception("empty function call result")
+        if args.verbose:
+            print(f"-> {function_call_result.parts[0].function_response.response}")
+        function_responses.append(function_call_result.parts[0])
 
-        print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-        print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-    else:
-
-        if not response.function_calls:
-            return response.text
-
-        for function_call_part in response.function_calls:
-            print(call_function(function_call_part).parts[0].function_response.response)
-
-
+    if not function_responses:
+        raise Exception("no function responses generated, exiting.")
 
 
 
