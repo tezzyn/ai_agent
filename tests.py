@@ -26,7 +26,7 @@ import subprocess
 #           #
 
 
-print(get_file_content("calculator", "main.py"))
+# print(get_file_content("calculator", "main.py"))
 
 # print("--------------------------------------------------------------------")
 
@@ -61,7 +61,7 @@ print(get_file_content("calculator", "main.py"))
 
 # print("--------------------------------------------------------------------")
 
-# print(run_file("calculator", "main.py", ["3 + 5"]))
+print(run_file("calculator", "main.py", ["3 + 5"]))
 
 
 # print("--------------------------------------------------------------------")

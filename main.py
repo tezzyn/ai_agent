@@ -12,7 +12,12 @@ def main():
     load_dotenv()
     verbose = "--verbose" in sys.argv or "-v" in sys.argv
 
-    args = sys.argv[1:]
+    # args = sys.argv[1:]
+    
+    args = []
+    for arg in sys.argv[1:]:
+        if not arg.startswith("--"):
+            args.append(arg)
 
     if not args:
             print("invalid input")
@@ -36,11 +41,11 @@ def main():
 
     generate_content(client, messages)
     
+    
+    
 
 def generate_content(client, messages):
     
-    # verbose = "-v" in sys.argv or "--verbose" in sys.argv
-
     parser = argparse.ArgumentParser()
     
     response = client.models.generate_content(
@@ -49,6 +54,8 @@ def generate_content(client, messages):
         config=types.GenerateContentConfig(tools=[available_functions], system_instruction=system_prompt)
     
     )
+    
+    
 
     parser.add_argument("client")
 
@@ -73,11 +80,15 @@ def generate_content(client, messages):
         ):
             raise Exception("empty function call result")
         if args.verbose:
-            print(f"-> {function_call_result.parts[0].function_response.response}")
+            print(f"-> {function_call_result.parts[0].function_response.response['result'][0]}")
         function_responses.append(function_call_result.parts[0])
+        # print(function_responses)
 
     if not function_responses:
         raise Exception("no function responses generated, exiting.")
+    
+    for candidate in response.candidates:
+        messages.append(candidate.content)
 
 
 
