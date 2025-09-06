@@ -88,7 +88,7 @@ def generate_content(client, messages):
         raise Exception("no function responses generated, exiting.")
     
     for candidate in response.candidates:
-        messages.append(candidate.content)
+        messages.append(" ".join(candidate.content))
 
 
 
