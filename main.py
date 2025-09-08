@@ -38,15 +38,20 @@ def main():
  
     ]
 
-
-    generate_content(client, messages)
+    for _ in range(20):
+        final = generate_content(client, messages, verbose)
+        if final:
+            print(f"Final response: {final}")
+            break
+    
+     
     
     
     
 
-def generate_content(client, messages):
+def generate_content(client, messages,verbose=False):
     
-    parser = argparse.ArgumentParser()
+    # parser = argparse.ArgumentParser()
     
     response = client.models.generate_content(
         model='gemini-2.0-flash-001', 
@@ -57,13 +62,17 @@ def generate_content(client, messages):
     
     
 
-    parser.add_argument("client")
+    # parser.add_argument("client")
 
-    parser.add_argument('-v', '--verbose', action='store_true')
+    # parser.add_argument('-v', '--verbose', action='store_true')
 
-    args = parser.parse_args()
+    # args = parser.parse_args()
 
-    if  args.verbose:
+    # if  args.verbose:
+    #     print(f"-> Prompt tokens: {response.usage_metadata.prompt_token_count}")
+    #     print(f"-> Response tokens: {response.usage_metadata.candidates_token_count}\n")
+        
+    if  verbose:
         print(f"-> Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"-> Response tokens: {response.usage_metadata.candidates_token_count}\n")
 
@@ -73,22 +82,29 @@ def generate_content(client, messages):
     function_responses = []
 
     for function_call_part in response.function_calls:
-        function_call_result = call_function(function_call_part, args.verbose)
+        function_call_result = call_function(function_call_part, verbose)
         if (
             not function_call_result.parts
             or not function_call_result.parts[0].function_response
         ):
             raise Exception("empty function call result")
-        if args.verbose:
+        if verbose:
             print(f"-> {function_call_result.parts[0].function_response.response['result'][0]}")
         function_responses.append(function_call_result.parts[0])
         # print(function_responses)
+        
+        
+    # python
+    for part in function_responses:
+        messages.append(
+            types.Content(role="user", parts=[part])
+        )
 
     if not function_responses:
         raise Exception("no function responses generated, exiting.")
     
     for candidate in response.candidates:
-        messages.append(" ".join(candidate.content))
+        messages.append(candidate.content)
 
 
 
