@@ -10,9 +10,8 @@ from prompts import system_prompt
 def main():
 
     load_dotenv()
+    
     verbose = "--verbose" in sys.argv or "-v" in sys.argv
-
-    # args = sys.argv[1:]
     
     args = []
     for arg in sys.argv[1:]:
@@ -27,9 +26,7 @@ def main():
 
     api_key = os.environ.get("GEMINI_API_KEY")
     client = genai.Client(api_key=api_key)
-  
-    user_prompt = " ".join(args)
-    
+      
     if verbose:
         print(f"-> User prompt: {user_prompt}\n")
 
@@ -43,16 +40,16 @@ def main():
         if final:
             print(f"Final response: {final}")
             break
-    
+        else:
+            generate_content(client, messages, verbose)
+            
      
     
     
     
 
 def generate_content(client, messages,verbose=False):
-    
-    # parser = argparse.ArgumentParser()
-    
+        
     response = client.models.generate_content(
         model='gemini-2.0-flash-001', 
         contents=messages,
@@ -60,51 +57,61 @@ def generate_content(client, messages,verbose=False):
     
     )
     
-    
-
-    # parser.add_argument("client")
-
-    # parser.add_argument('-v', '--verbose', action='store_true')
-
-    # args = parser.parse_args()
-
-    # if  args.verbose:
-    #     print(f"-> Prompt tokens: {response.usage_metadata.prompt_token_count}")
-    #     print(f"-> Response tokens: {response.usage_metadata.candidates_token_count}\n")
-        
     if  verbose:
         print(f"-> Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"-> Response tokens: {response.usage_metadata.candidates_token_count}\n")
-
-    if not response.function_calls:
-        return response.text
     
     function_responses = []
 
-    for function_call_part in response.function_calls:
-        function_call_result = call_function(function_call_part, verbose)
-        if (
-            not function_call_result.parts
-            or not function_call_result.parts[0].function_response
-        ):
-            raise Exception("empty function call result")
-        if verbose:
-            print(f"-> {function_call_result.parts[0].function_response.response['result'][0]}")
-        function_responses.append(function_call_result.parts[0])
-        # print(function_responses)
-        
-        
-    # python
-    for part in function_responses:
-        messages.append(
-            types.Content(role="user", parts=[part])
-        )
+    # for function_call_part in response.function_calls:
+    #     function_call_result = call_function(function_call_part, verbose)
+    #     if (
+    #         not function_call_result.parts
+    #         or not function_call_result.parts[0].function_response
+    #     ):
+    #         raise Exception("empty function call result")
+    #     if verbose:
+    #         print(f"-> {function_call_result.parts[0].function_response.response['result'][0]}")
+    #     function_responses.append(function_call_result.parts[0])
 
-    if not function_responses:
-        raise Exception("no function responses generated, exiting.")
+    # for part in function_responses:
+    #     messages.append(
+    #         types.Content(role="user", parts=[part])
+    #     )
+
+    # if not function_responses:
+    #     raise Exception("no function responses generated, exiting.")
     
-    for candidate in response.candidates:
-        messages.append(candidate.content)
+    # for candidate in response.candidates:
+    #     messages.append(candidate.content)
+    
+    if not response.function_calls:
+        return response.text
+    else:
+        
+        for function_call_part in response.function_calls:
+            function_call_result = call_function(function_call_part, verbose)
+            if (
+                not function_call_result.parts
+                or not function_call_result.parts[0].function_response
+            ):
+                raise Exception("empty function call result")
+            if verbose:
+                print(f"-> {function_call_result.parts[0].function_response.response['result'][0]}")
+            function_responses.append(function_call_result.parts[0])
+
+        for part in function_responses:
+            messages.append(
+                types.Content(role="user", parts=[part])
+            )
+
+        if not function_responses:
+            raise Exception("no function responses generated, exiting.")
+            
+        
+        for candidate in response.candidates:
+            messages.append(candidate.content)
+        return None
 
 
 
