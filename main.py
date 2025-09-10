@@ -35,13 +35,12 @@ def main():
  
     ]
 
-    for _ in range(20):
+    for _ in range(21):
         final = generate_content(client, messages, verbose)
         if final:
             print(f"Final response: {final}")
             break
-        else:
-            generate_content(client, messages, verbose)
+        generate_content(client, messages, verbose)
             
      
     
@@ -99,14 +98,16 @@ def generate_content(client, messages,verbose=False):
             if verbose:
                 print(f"-> {function_call_result.parts[0].function_response.response['result'][0]}")
             function_responses.append(function_call_result.parts[0])
+            
+            
 
-        for part in function_responses:
-            messages.append(
-                types.Content(role="user", parts=[part])
-            )
+            for part in function_responses:
+                messages.append(
+                    types.Content(role="user", parts=[part])
+                )
 
-        if not function_responses:
-            raise Exception("no function responses generated, exiting.")
+            if not function_responses:
+                raise Exception("no function responses generated, exiting.")
             
         
         for candidate in response.candidates:
