@@ -40,7 +40,6 @@ def main():
         if final:
             print(f"Final response: {final}")
             break
-        generate_content(client, messages, verbose)
             
      
     
@@ -110,9 +109,10 @@ def generate_content(client, messages,verbose=False):
                 raise Exception("no function responses generated, exiting.")
             
         
-        for candidate in response.candidates:
-            messages.append(candidate.content)
-        return None
+            for candidate in response.candidates:
+                # print(candidate.content)
+                messages.append(candidate.content)
+            return None
 
 
 

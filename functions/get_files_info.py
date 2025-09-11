@@ -16,7 +16,7 @@ schema_get_files_info = types.FunctionDeclaration(
         ),
     )
 
-def get_files_info(working_directory, directory="w"):
+def get_files_info(working_directory, directory="."):
 
 
     combined = Path(working_directory)/Path(directory) 
